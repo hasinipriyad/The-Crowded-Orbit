@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>The Crowded Orbit — Timeline</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Global styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- D3 v7 -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+<body class="min-h-screen">
+  <div id="space-bg" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between p-4">
+      <div class="text-xl font-semibold tracking-wide">The Crowded Orbit</div>
+      <nav class="flex gap-4 text-sm text-gray-300">
+        <a class="hover:text-white" href="index.html">Home</a>
+        <a class="hover:text-white" href="timeline.html">Timeline</a>
+        <a class="hover:text-white" href="status.html">Status Mix</a>
+        <a class="hover:text-white" href="orbit-density.html">Orbit Density</a>
+        <a class="hover:text-white" href="collision-debris-trends.html">Trends</a>
+        <a class="hover:text-white" href="predictive-scenarios.html">Predictive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl p-4">
+    <!-- Chart card -->
+    <section class="card">
+      <!-- Controls -->
+      <div class="flex flex-wrap items-end gap-4 mb-4">
+        <!-- Country filter (searchable dropdown) -->
+        <div class="relative" id="countryFilter">
+          <button
+            type="button"
+            class="flex items-center justify-between min-w-[240px] rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-sm"
+            data-toggle="panel"
+          >
+            <span class="text-gray-200">
+              Country
+              <span class="text-gray-400" id="countrySummary">(All)</span>
+            </span>
+            <svg width="16" height="16" viewBox="0 0 24 24" class="opacity-70">
+              <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
+
+          <div class="absolute left-0 mt-2 w-[320px] rounded-lg border border-white/10 bg-black/90 backdrop-blur p-3 hidden" data-panel>
+            <input type="text" placeholder="Search country…" class="w-full rounded-md border border-white/10 bg-black/60 px-3 py-2 text-sm mb-2" data-search />
+            <div class="max-h-64 overflow-auto space-y-1 pr-1" data-options></div>
+            <div class="mt-2 flex justify-between text-xs text-gray-300">
+              <button data-clear class="rounded border border-white/10 px-2 py-1 hover:bg-white/10">Clear</button>
+              <button data-selectall class="rounded border border-white/10 px-2 py-1 hover:bg-white/10">Select all</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Object Type filter (searchable dropdown) -->
+        <div class="relative" id="typeFilter">
+          <button
+            type="button"
+            class="flex items-center justify-between min-w-[240px] rounded-lg border border-white/10 bg-black/50 px-3 py-2 text-sm"
+            data-toggle="panel"
+          >
+            <span class="text-gray-200">
+              Object Type
+              <span class="text-gray-400" id="typeSummary">(PAY)</span>
+            </span>
+            <svg width="16" height="16" viewBox="0 0 24 24" class="opacity-70">
+              <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+            </svg>
+          </button>
+
+          <div class="absolute left-0 mt-2 w-[320px] rounded-lg border border-white/10 bg-black/90 backdrop-blur p-3 hidden" data-panel>
+            <input type="text" placeholder="Search type…" class="w-full rounded-md border border-white/10 bg-black/60 px-3 py-2 text-sm mb-2" data-search />
+            <div class="max-h-64 overflow-auto space-y-1 pr-1" data-options></div>
+            <div class="mt-2 flex justify-between text-xs text-gray-300">
+              <button data-clear class="rounded border border-white/10 px-2 py-1 hover:bg-white/10">Clear</button>
+              <button data-selectall class="rounded border border-white/10 px-2 py-1 hover:bg-white/10">Select all</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode -->
+        <div>
+          <label class="block text-sm text-gray-300 mb-1">Mode</label>
+          <div class="inline-flex rounded-lg border border-white/10 overflow-hidden">
+            <button data-mode="yearly" class="mode-btn px-3 py-2 text-sm bg-white/10">Yearly</button>
+            <button data-mode="cumulative" class="mode-btn px-3 py-2 text-sm">Cumulative</button>
+          </div>
+        </div>
+
+        <button id="clearFilters" class="rounded-lg border border-white/10 px-3 py-2 text-sm hover:bg-white/10">
+          Clear filters
+        </button>
+      </div>
+
+      <!-- Chart -->
+      <div id="chart" class="w-full overflow-x-auto"></div>
+
+      <!-- Axis titles -->
+      <div class="mt-3 flex justify-between text-sm text-gray-300">
+        <div class="mono">Y: Objects (count)</div>
+        <div class="mono">X: Launch Year</div>
+      </div>
+    </section>
+
+    <!-- Persistent bottom context panel -->
+    <section id="contextPanel" class="card mt-4">
+      <div class="flex items-start gap-4">
+        <img id="ctxImg" alt="" class="w-40 h-28 object-cover rounded-lg border border-white/10 hidden" />
+        <div class="min-w-0">
+          <h3 id="ctxTitle" class="text-lg font-semibold mb-1">Click a year to see context</h3>
+          <p id="ctxSummary" class="text-gray-300 text-sm leading-relaxed">
+            Year summary from Wikipedia will appear here, along with top drivers for that year (based on your current filters).
+          </p>
+          <div class="mt-3">
+            <h4 class="font-medium mb-1">Top 3 drivers this year</h4>
+            <ol id="ctxDriverList" class="list-decimal list-inside text-gray-200 text-sm"></ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Page logic -->
+  <script src="js/timeline.js"></script>
+</body>
+</html>

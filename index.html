@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>The Crowded Orbit — Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Global styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="min-h-screen">
+  <div id="space-bg" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between p-4">
+      <div class="text-xl font-semibold tracking-wide">The Crowded Orbit</div>
+      <nav class="flex gap-4 text-sm text-gray-300">
+        <a class="hover:text-white" href="index.html">Home</a>
+        <a class="hover:text-white" href="timeline.html">Timeline</a>
+        <a class="hover:text-white" href="status.html">Status Mix</a>
+        <a class="hover:text-white" href="orbit-density.html">Orbit Density</a>
+        <a class="hover:text-white" href="collision-debris-trends.html">Trends</a>
+        <a class="hover:text-white" href="predictive-scenarios.html">Predictive</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="mx-auto max-w-6xl p-4">
+    <section class="card text-center py-20">
+      <h1 class="text-4xl font-semibold mb-4">The Crowded Orbit</h1>
+      <p class="text-gray-300 max-w-2xl mx-auto">
+        Explore how our skies filled up — from early launches to modern mega-constellations.  
+        Interact with live visualizations of satellite growth, debris, and future projections.
+      </p>
+
+      <a href="timeline.html"
+         class="inline-block mt-8 rounded-xl border border-white/10 px-6 py-3 hover:bg-white/10 transition">
+        🚀 Enter the Interactive Timeline
+      </a>
+    </section>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+:root {
+  --bg: #000;
+  --ink: #f5f7fa;
+  --muted: #9aa0a6;
+  --accent: #7aa7ff;
+  --accent-2: #b3f0ff;
+  --border: #232323;
+}
+
+/* Global reset */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Space starfield background */
+#space-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  background: radial-gradient(ellipse at top, #0a0a0a 0%, #000 70%);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Optional star twinkle effect (subtle) */
+#space-bg::before, #space-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+                    radial-gradient(1px 1px at 80% 70%, #fff, transparent),
+                    radial-gradient(1px 1px at 60% 20%, #fff, transparent),
+                    radial-gradient(1px 1px at 30% 80%, #fff, transparent),
+                    radial-gradient(1px 1px at 50% 50%, #fff, transparent);
+  background-repeat: no-repeat;
+  opacity: 0.25;
+  animation: twinkle 6s infinite alternate ease-in-out;
+}
+@keyframes twinkle {
+  from { opacity: 0.25; transform: scale(1); }
+  to { opacity: 0.35; transform: scale(1.02); }
+}
+
+/* Card container */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem; /* 12px */
+  padding: 1rem;
+  box-shadow: 0 0 8px rgba(255,255,255,0.02);
+}
+
+/* Drawer (if still used in timeline) */
+.drawer {
+  background: rgba(0, 0, 0, 0.9);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Small typography helpers */
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Chip buttons (optional if not styled via Tailwind) */
+button.chip {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button.chip:hover {
+  background: rgba(255,255,255,0.15);
+}
+button.chip.active {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.25);
+}
