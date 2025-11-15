@@ -1,0 +1,158 @@
+:root {
+  --bg: #000;
+  --ink: #f5f7fa;
+  --muted: #9aa0a6;
+  --accent: #7aa7ff;
+  --border: #232323;
+}
+
+/* ========== GLOBAL RESET ========== */
+* {
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ========== BACKGROUND LAYERS ========== */
+
+/* 3D Scene Canvas (Earth + debris) */
+#space-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0; /* visible layer, behind everything but background overlay */
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  pointer-events: none; /* don’t block clicks */
+}
+
+/* Soft transparent vignette over the 3D scene */
+#space-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, rgba(10,20,40,0.18), transparent 65%),
+    radial-gradient(ellipse at bottom, rgba(8,12,24,0.24), transparent 70%),
+    radial-gradient(ellipse at top, rgba(0,0,0,0.35), transparent 60%);
+}
+
+/* ========== HEADER ========== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10; /* stays above everything else */
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: 0.15s ease;
+}
+.nav a:hover {
+  border-color: #2a2a2a;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ========== HERO OVERLAY (CENTERED TEXT) ========== */
+.hero-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5; /* above the background, below header */
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 0 20px;
+  pointer-events: none; /* allow interaction with background */
+}
+
+.hero-overlay h1 {
+  font-size: clamp(28px, 6vw, 64px);
+  line-height: 1.05;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.45);
+}
+
+.hero-overlay .accent {
+  color: var(--accent);
+  text-shadow: 
+    0 0 24px rgba(122, 167, 255, 0.35),
+    0 0 48px rgba(122, 167, 255, 0.2);
+}
+
+.hero-overlay .tagline {
+  max-width: 720px;
+  color: var(--muted);
+  font-size: clamp(14px, 1.8vw, 18px);
+  margin: 8px auto 18px;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Button in hero (interactive) */
+.hero-overlay .btn.enter {
+  pointer-events: auto; /* clickable */
+  display: inline-block;
+  margin-top: 6px;
+  border: 1px solid #2b2b2b;
+  background: #0d0d0d;
+  color: var(--ink);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.hero-overlay .btn.enter:hover {
+  background: #141414;
+  border-color: #3a3a3a;
+  transform: translateY(-1px);
+}
+
+.hero-overlay .btn.enter:active {
+  transform: translateY(0);
+}
+
+/* ========== RESPONSIVE HELPERS ========== */
+@media (max-width: 600px) {
+  .site-header {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nav {
+    margin-left: 0;
+    justify-content: center;
+  }
+}

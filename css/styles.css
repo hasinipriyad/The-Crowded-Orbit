@@ -1,0 +1,91 @@
+:root {
+  --bg: #000;
+  --ink: #f5f7fa;
+  --muted: #9aa0a6;
+  --accent: #7aa7ff;
+  --accent-2: #b3f0ff;
+  --border: #232323;
+}
+
+/* Global reset */
+* { box-sizing: border-box; }
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============= Background container for animated stars ============= */
+/* js/stars-bg.js will append a full-screen <canvas> inside #space-bg */
+#space-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;           /* behind content */
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* never block clicks */
+}
+
+/* Optional soft vignette to add depth without hiding the canvas */
+#space-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(10,20,40,0.16), transparent 65%),
+    radial-gradient(ellipse at bottom, rgba(8,12,24,0.20), transparent 70%),
+    radial-gradient(ellipse at top, rgba(0,0,0,0.30), transparent 60%);
+  pointer-events: none;
+}
+
+/* NOTE: removed old static star pseudo-elements + keyframes twinkle,
+   since stars are now drawn by Three.js in js/stars-bg.js. */
+
+/* ============= Site UI ============= */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem; /* 12px */
+  padding: 1rem;
+  box-shadow: 0 0 8px rgba(255,255,255,0.02);
+}
+
+/* Drawer (if still used in timeline) */
+.drawer {
+  background: rgba(0, 0, 0, 0.9);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Small typography helpers */
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Filter chips (if you still use them anywhere) */
+button.chip {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button.chip:hover {
+  background: rgba(255,255,255,0.15);
+}
+button.chip.active {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.25);
+}
+
+/* Make sure headers/navs sit above the star canvas */
+header, .site-header { position: sticky; top: 0; z-index: 10; }
+main, .page { position: relative; z-index: 1; } /* content above background */

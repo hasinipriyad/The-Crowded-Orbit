@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>The Crowded Orbit — Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind (optional for your header links) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Global styles (used by other pages too) -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Landing-only styles (we’ll create this next) -->
+  <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+  <!-- The WebGL canvas (must exist BEFORE the script runs) -->
+  <canvas id="space-canvas"></canvas>
+  <!-- Soft transparent vignette on top of canvas -->
+  <div id="space-bg" aria-hidden="true"></div>
+
+  <!-- Simple header -->
+  <header class="site-header">
+    <div class="brand">The Crowded Orbit</div>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="timeline.html">Timeline</a>
+      <a href="status.html">Status Mix</a>
+      <a href="orbit-density.html">Orbit Density</a>
+      <a href="collision-debris-trends.html">Trends</a>
+      <a href="predictive-scenarios.html">Predictive</a>
+    </nav>
+  </header>
+
+  <!-- Text overlay centered over the 3D scene -->
+  <main class="hero-overlay">
+    <h1>Low Earth Orbit is getting <span class="accent">crowded.</span></h1>
+    <p class="tagline">Explore launches, congestion, and debris trends — visualized.</p>
+    <a class="btn enter" href="timeline.html">Enter Dashboard</a>
+  </main>
+
+  <!-- Site helpers (optional) -->
+  <script src="js/main.js"></script>
+  <!-- Three.js background (module import) -->
+  <script type="module" src="js/space-bg-three.js"></script>
+</body>
+</html>
