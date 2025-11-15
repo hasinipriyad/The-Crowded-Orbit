@@ -1,3 +1,205 @@
+/* =======================================================================
+   ORBIT DENSITY PAGE STYLES (density.html)
+   These come FIRST so layout + components render correctly.
+   ======================================================================= */
+
+/* ---- Density page layout ---- */
+.density-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-bottom: 2.5rem;
+}
+
+/* Titles */
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: var(--muted);
+  max-width: 640px;
+}
+
+/* ---- Filters ---- */
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+}
+
+.filters-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filters-row select,
+.filters-row input[type="range"] {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+
+.filters-row span.helper {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+/* ---- KPI cards ---- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.kpi-card {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.7rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.kpi-card h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.kpi-card .kpi-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.kpi-card .kpi-note {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+/* ---- Chart layout ---- */
+.chart-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chart-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+  gap: 1rem;
+}
+
+.chart-col {
+  min-width: 0;
+}
+
+/* Axes styling for dark background */
+.axis text {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.axis path,
+.axis line {
+  stroke: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 900px) {
+  .chart-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.chart-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.chart-subtitle {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.chart-card {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.7rem;
+  padding: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 100%;
+}
+
+.chart-card svg {
+  width: 100%;
+  height: 280px;
+}
+
+.chart-card-small svg {
+  height: 240px;
+}
+
+/* ---- Histogram bars ---- */
+.bar-rect {
+  cursor: pointer;
+}
+
+.bar-rect.selected {
+  stroke: var(--accent-2);
+  stroke-width: 1.5px;
+}
+
+/* ---- Toggle for Absolute / Percent ---- */
+.stack-toggle {
+  display: inline-flex;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+  font-size: 0.75rem;
+}
+
+.stack-toggle button {
+  padding: 0.2rem 0.65rem;
+  background: transparent;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.stack-toggle button.active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---- Tooltip ---- */
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(10, 10, 20, 0.95);
+  color: #fff;
+  border-radius: 0.35rem;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 50;
+  max-width: 260px;
+}
+
+/* =======================================================================
+   ORIGINAL GLOBAL STYLES
+   ======================================================================= */
+
 :root {
   --bg: #000;
   --ink: #f5f7fa;
@@ -8,69 +210,70 @@
 }
 
 /* Global reset */
-* { box-sizing: border-box; }
-html, body {
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
   height: 100%;
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* ============= Background container for animated stars ============= */
-/* js/stars-bg.js will append a full-screen <canvas> inside #space-bg */
+/* ============= Background for animated stars ============= */
 #space-bg {
   position: fixed;
   inset: 0;
-  z-index: 0;           /* behind content */
+  z-index: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none; /* never block clicks */
+  pointer-events: none;
 }
 
-/* Optional soft vignette to add depth without hiding the canvas */
 #space-bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at center, rgba(10,20,40,0.16), transparent 65%),
-    radial-gradient(ellipse at bottom, rgba(8,12,24,0.20), transparent 70%),
-    radial-gradient(ellipse at top, rgba(0,0,0,0.30), transparent 60%);
+  background: radial-gradient(
+      ellipse at center,
+      rgba(10, 20, 40, 0.16),
+      transparent 65%
+    ),
+    radial-gradient(ellipse at bottom, rgba(8, 12, 24, 0.2), transparent 70%),
+    radial-gradient(ellipse at top, rgba(0, 0, 0, 0.3), transparent 60%);
   pointer-events: none;
 }
 
-/* NOTE: removed old static star pseudo-elements + keyframes twinkle,
-   since stars are now drawn by Three.js in js/stars-bg.js. */
-
-/* ============= Site UI ============= */
+/* ============= Shared site UI ============= */
 .card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem; /* 12px */
+  border-radius: 0.75rem;
   padding: 1rem;
-  box-shadow: 0 0 8px rgba(255,255,255,0.02);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.02);
 }
 
-/* Drawer (if still used in timeline) */
 .drawer {
   background: rgba(0, 0, 0, 0.9);
-  border-top: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
 }
 
-/* Small typography helpers */
 .mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 }
 
-/* Filter chips (if you still use them anywhere) */
 button.chip {
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   color: #fff;
   font-size: 0.75rem;
   padding: 0.3rem 0.7rem;
@@ -78,14 +281,26 @@ button.chip {
   cursor: pointer;
   transition: background 0.2s;
 }
+
 button.chip:hover {
-  background: rgba(255,255,255,0.15);
-}
-button.chip.active {
-  background: rgba(255,255,255,0.25);
-  border-color: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* Make sure headers/navs sit above the star canvas */
-header, .site-header { position: sticky; top: 0; z-index: 10; }
-main, .page { position: relative; z-index: 1; } /* content above background */
+button.chip.active {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Keep headers / content above the starfield */
+header,
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+main,
+.page {
+  position: relative;
+  z-index: 1;
+}
