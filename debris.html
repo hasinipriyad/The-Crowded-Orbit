@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>The Crowded Orbit — Debris & Collision Trends</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+</head>
+
+<body class="min-h-screen">
+  <div id="space-bg" aria-hidden="true"></div>
+  <script type="module" src="js/stars-bg.js"></script>
+
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl items-center justify-between p-4">
+      <div class="text-xl font-semibold tracking-wide">The Crowded Orbit</div>
+      <nav class="flex gap-4 text-sm text-gray-300">
+        <a class="hover:text-white" href="index.html">Home</a>
+        <a class="hover:text-white" href="timeline.html">Timeline</a>
+        <a class="hover:text-white" href="status.html">Status Mix</a>
+        <a class="hover:text-white" href="density.html">Orbit Density</a>
+        <a class="hover:text-white" href="debris.html">Trends</a>
+        <a class="hover:text-white" href="projections.html">Predictive</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl p-4 trend-page">
+    <section class="card">
+      <div class="mb-4">
+        <h1 class="page-title">Debris vs Launch Activity</h1>
+        <p class="page-subtitle">
+          How yearly launches relate to debris growth in Low Earth Orbit.  
+          The debris line stays global, while the launch line can be filtered by agency.
+        </p>
+      </div>
+
+      <div class="filters-row mb-4">
+        <label>
+          Country / Agency (launch line)
+          <select id="debris-country-filter"></select>
+        </label>
+      </div>
+
+      <div>
+        <div class="chart-title">Debris Added vs Launches per Year</div>
+        <div class="chart-subtitle">
+          Left axis: cumulative debris (orange).  
+          Right axis: launches / year (blue).  
+          Hover or click to see details.
+        </div>
+
+        <div class="chart-card" id="debris-chart"></div>
+
+        <div class="mt-3 flex justify-between text-sm text-gray-300">
+          <div class="mono">Y₁: Cumulative debris</div>
+          <div class="mono">Y₂: Launches / year</div>
+          <div class="mono">X: Year</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENT PANEL -->
+    <section class="card mt-4" id="event-panel">
+      <h2 id="event-title" class="text-lg font-semibold mb-1">
+        Click a year or event dot to see significant events
+      </h2>
+      <p id="event-summary" class="text-sm text-gray-300">
+        This panel highlights debris growth, launch surges, and major collision / ASAT events.
+      </p>
+      <div id="event-metrics" class="mt-3 text-sm text-gray-200"></div>
+    </section>
+  </main>
+
+  <script src="js/debris.js"></script>
+</body>
+</html>
