@@ -5,7 +5,7 @@
   const DATA_URL = "data/clean_leo_satellites.csv";
   const raw = await d3.csv(DATA_URL, d3.autoType);
 
-  // ---------- Helpers ----------
+  //  Helpers 
   const uniq = (arr) => Array.from(new Set(arr)).sort((a,b)=> (a>b?1:a<b?-1:0));
   const fmt = d3.format(",");
   const pct = d3.format(".0%");
@@ -37,7 +37,7 @@
     operator: inferOperator(d.name)
   })).filter(d => !Number.isNaN(d.year));
 
-  // ---------- Filter state ----------
+  //  Filter state 
   const countryRoot = document.getElementById("countryFilter");
   const agencyRoot  = document.getElementById("agencyFilter");
   const countrySummaryEl = document.getElementById("countrySummary");
@@ -127,7 +127,7 @@
     return out;
   }
 
-  // ---------- Section A: TOTAL Donut ----------
+  //  Section A: TOTAL Donut 
   const donutSel = d3.select("#donutChart");
   const legendEl = document.getElementById("donutLegend");
   const kpiActive = document.getElementById("kpiActive");
@@ -216,7 +216,7 @@
     });
   }
 
-  // ---------- Section B: Cohorts ----------
+  //  Section B: Cohorts 
   const cohortSel = d3.select("#cohortChart");
   const cohortPanel = document.getElementById("cohortPanel");
   const cohortTitle = document.getElementById("cohortTitle");
@@ -330,7 +330,6 @@
       .style("cursor","pointer")
       .on("mousemove", (ev,d) => showTip(ev,d)).on("mouseleave", hideTip).on("click", (ev,d) => lockYear(d));
 
-    // ⭐ FIX: Bring tooltip to front so it’s never behind bars
     g.node().appendChild(tip.node());
 
     // Highlight locked year
@@ -350,7 +349,7 @@
     }
   }
 
-  // ---------- Render all ----------
+  //  Render all 
   function renderAll() {
     renderDonut();
     renderCohorts();
