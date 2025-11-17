@@ -37,7 +37,7 @@ This project combines **D3.js**, **Tailwind CSS**, and a fully custom dark-theme
 
 ##  **Features**
 
-### ** Multi-page D3 Visualizations**
+### Multi-page D3 Visualizations
 
 * Launch timeline (yearly + cumulative)
 * Status composition (active, inactive, debris, rocket bodies)
@@ -45,14 +45,14 @@ This project combines **D3.js**, **Tailwind CSS**, and a fully custom dark-theme
 * Debris vs launches with historic event markers
 * Predictive scenario modeling (baseline, accelerated, controlled growth)
 
-### ** Cohesive UI/UX**
+### Cohesive UI/UX
 
 * Animated starfield background
 * Glassmorphic cards + dark cosmic theme
 * Clean typography and accent colors
 * Fully responsive layout
 
-### ** Interactions**
+### Interactions
 
 * Tooltips
 * Click-to-focus panels
@@ -95,7 +95,7 @@ The-Crowded-Orbit/
 
 ---
 
-## 📊 **Dataset**
+##  **Dataset**
 
 This project uses a cleaned and preprocessed version of **SATCAT data from CelesTrak**.
 
