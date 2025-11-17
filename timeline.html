@@ -4,19 +4,13 @@
   <meta charset="utf-8" />
   <title>The Crowded Orbit — Timeline</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
   <!-- Global CSS -->
   <link rel="stylesheet" href="css/styles.css" />
-
   <!-- D3 -->
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
-
-<div id="space-bg"></div>
-<script type="module" src="js/stars-bg.js"></script>
 
 <body class="min-h-screen">
   <div id="space-bg" aria-hidden="true"></div>
@@ -25,7 +19,6 @@
   <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur">
     <div class="nav-container mx-auto flex items-center justify-between p-4">
       <div class="text-xl font-semibold tracking-wide">The Crowded Orbit</div>
-
       <nav class="flex gap-4 text-sm text-gray-300">
         <a class="hover:text-white" href="index.html">Home</a>
         <a class="active hover:text-white" href="timeline.html">Timeline</a>
@@ -38,8 +31,6 @@
   </header>
 
   <main class="mx-auto max-w-6xl p-4">
-
-    <!-- ⭐ CENTERED PAGE TITLE ⭐ -->
     <div class="page-header">
       <h1>Launch & Orbital Activity Timeline</h1>
       <p>Explore global launch patterns, satellite growth, and key trends across decades.</p>
@@ -47,10 +38,8 @@
 
     <!-- Chart Card -->
     <section class="card">
-
       <!-- Filters -->
-      <div class="flex flex-wrap items-end gap-4 mb-4">
-        
+      <div class="flex flex-wrap items-end gap-4 mb-4">      
         <!-- Country filter -->
         <div class="relative" id="countryFilter">
           <button type="button"
@@ -64,7 +53,6 @@
               <path fill="currentColor" d="M7 10l5 5 5-5z" />
             </svg>
           </button>
-
           <div class="absolute left-0 mt-2 w-[320px] rounded-lg border border-white/10 bg-black/90 backdrop-blur p-3 hidden"
             data-panel>
             <input type="text" placeholder="Search country…" data-search
@@ -148,7 +136,6 @@
         </div>
       </div>
     </section>
-
   </main>
 
   <!-- Page logic -->
