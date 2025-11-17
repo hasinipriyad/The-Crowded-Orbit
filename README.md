@@ -146,7 +146,7 @@ Right-click → *Open with Live Server*
 
 ---
 
-## 📄 **License**
+## **License**
 
 This project is for academic and educational use.
 
