@@ -1,5 +1,5 @@
 // Status Mix page (Totals + Cohorts in COUNTS only)
-// Filters: searchable dropdowns (Country, Agency/Operator), like timeline
+// Filters: searchable dropdowns (Country, Agency/Operator)
 
 (async function () {
   const DATA_URL = "data/clean_leo_satellites.csv";
