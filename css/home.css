@@ -7,14 +7,17 @@
 }
 
 /* RESET */
-* { box-sizing: border-box; }
-html, body {
+* {
+  box-sizing: border-box;
+}
+html,
+body {
   height: 100%;
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
-    "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
@@ -34,21 +37,22 @@ html, body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background:
-    radial-gradient(ellipse at center, rgba(10,20,40,0.18), transparent 65%),
-    radial-gradient(ellipse at bottom, rgba(8,12,24,0.24), transparent 70%),
-    radial-gradient(ellipse at top, rgba(0,0,0,0.35), transparent 60%);
+  background: radial-gradient(
+      ellipse at center,
+      rgba(10, 20, 40, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(ellipse at bottom, rgba(8, 12, 24, 0.24), transparent 70%),
+    radial-gradient(ellipse at top, rgba(0, 0, 0, 0.35), transparent 60%);
 }
 
-/* =====================================================
-   HEADER — PERFECTLY MATCHES GLOBAL styles.css
-   ===================================================== */
+/* HEADER */
 
 .site-header {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border);
 }
@@ -81,16 +85,14 @@ header nav a:hover {
   color: #fff;
 }
 
-/* Active link — EXACT SAME AS styles.css */
+/* Active link — */
 header nav a.active {
   font-weight: 700;
   color: #fff !important;
   border-bottom: 2px solid var(--accent);
 }
 
-/* =====================================================
-   HERO CONTENT
-   ===================================================== */
+/* HERO CONTENT */
 
 .hero-overlay {
   position: fixed;
@@ -107,12 +109,12 @@ header nav a.active {
   font-size: clamp(28px, 6vw, 64px);
   font-weight: 800;
   margin: 0 0 10px;
-  text-shadow: 0 0 16px rgba(0,0,0,0.45);
+  text-shadow: 0 0 16px rgba(0, 0, 0, 0.45);
 }
 
 .hero-overlay .accent {
   color: var(--accent);
-  text-shadow: 0 0 24px rgba(122,167,255,0.35);
+  text-shadow: 0 0 24px rgba(122, 167, 255, 0.35);
 }
 
 .hero-overlay .tagline {
