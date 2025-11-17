@@ -1,4 +1,3 @@
-// density.js
 // Orbit Density — simple histogram: satellite distribution by altitude (LEO)
 // Filters: Country/Agency, Status, Object Type
 
@@ -31,9 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const bandSummary = document.getElementById("band-summary");
   const bandMetrics = document.getElementById("band-metrics");
 
-  // ============================
-  // ⭐ Responsive width function
-  // ============================
+  // Responsive width function
   function getChartWidth() {
     return histContainer.node().clientWidth;
   }
@@ -86,9 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .text("Number of objects");
 
 
-  // =====================================================
-  // ⭐ MAIN UPDATE — REBUILD SVG ON WINDOW RESIZE
-  // =====================================================
+  // REBUILD SVG ON WINDOW RESIZE
   window.addEventListener("resize", () => {
     refreshChartDimensions();
     updateHistogram();
@@ -196,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateHistogram();
   }
 
-  // =============== HISTOGRAM ===============
+  //  HISTOGRAM 
   function updateHistogram() {
     histG.selectAll(".bar-group").remove();
 
