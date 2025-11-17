@@ -5,7 +5,7 @@ const canvas = document.getElementById("space-canvas");
 const renderer = new THREE.WebGLRenderer({
   canvas,
   antialias: true,
-  alpha: true,                      // IMPORTANT: keep transparent over page
+  alpha: true, // IMPORTANT: keep transparent over page
   powerPreference: "high-performance",
 });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -26,7 +26,7 @@ const dir = new THREE.DirectionalLight(0xffffff, 0.7);
 dir.position.set(2.5, 1.5, 2.2);
 scene.add(dir);
 
-/* ---------- STARFIELD ---------- */
+/*  STARFIELD  */
 function makeStars(count = 14000, radius = 160) {
   const positions = new Float32Array(count * 3);
   for (let i = 0; i < count; i++) {
@@ -65,7 +65,7 @@ function updateStars(t) {
   stars.rotation.y = t * 0.019;
 }
 
-/* ---------- EARTH ---------- */
+/*  EARTH  */
 const loader = new THREE.TextureLoader();
 const earthTex = loader.load("https://threejs.org/examples/textures/land_ocean_ice_cloud_2048.jpg");
 
@@ -81,7 +81,7 @@ const atm = new THREE.Mesh(
 );
 scene.add(atm);
 
-/* ---------- LEO SATELLITES (instanced) ---------- */
+/*  LEO SATELLITES (instanced)  */
 function makeSatellites({
   count = 320,
   shells = [1.45, 1.6, 1.78],
@@ -129,7 +129,7 @@ function makeSatellites({
 const sats = makeSatellites();
 scene.add(sats);
 
-/* ---------- Input & Resize ---------- */
+/*  Input & Resize  */
 const mouse = new THREE.Vector2(0, 0);
 addEventListener("pointermove", (e) => {
   mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -144,7 +144,7 @@ function onResize() {
 }
 addEventListener("resize", onResize);
 
-/* ---------- Animate ---------- */
+/*  Animate  */
 const clock = new THREE.Clock();
 
 function animate() {
