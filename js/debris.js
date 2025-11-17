@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
     resetEventPanel();
   }
 
-  // Draw event dots (NO LABELS ON CHART)
+  // Draw event dots
   function drawEventDots() {
     g.selectAll(".event-dot").remove();
 
@@ -329,9 +329,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  //
-  // Event Panel — KPIs (Color-coded)
-  //
+
+  // Event Panel — KPIs 
   function resetEventPanel() {
     eventTitle.textContent = "Click a year or event dot to see significant events";
     eventSummary.textContent =
