@@ -16,25 +16,32 @@
 
   <!-- Header -->
   <header class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur">
-    <div class="mx-auto flex max-w-6xl items-center justify-between p-4">
+    <div class="nav-container mx-auto flex items-center justify-between p-4">
       <div class="text-xl font-semibold tracking-wide">The Crowded Orbit</div>
+
       <nav class="flex gap-4 text-sm text-gray-300">
         <a class="hover:text-white" href="index.html">Home</a>
         <a class="hover:text-white" href="timeline.html">Timeline</a>
         <a class="hover:text-white" href="status.html">Status Mix</a>
         <a class="hover:text-white" href="density.html">Orbit Density</a>
         <a class="hover:text-white" href="debris.html">Trends</a>
-        <a class="hover:text-white text-white font-semibold" href="predictive.html">Predictive</a>
+        <a class="active hover:text-white" href="projections.html">Predictive</a>
       </nav>
     </div>
   </header>
 
-  <main class="mx-auto max-w-6xl p-4">
-    <section class="card">
-      <h1 class="page-title mb-1">Predictive Scenario Analysis</h1>
-      <p class="page-subtitle mb-4">
-        Explore how LEO congestion may evolve under different global launch behaviors and space-traffic policies.
+  <main class="mx-auto max-w-6xl p-4 predictive-page">
+
+    <!-- ⭐ CENTERED PAGE TITLE ⭐ -->
+    <div class="page-header">
+      <h1>Predictive Scenario Analysis</h1>
+      <p>
+        How LEO congestion may evolve under different launch behaviors,
+        policy interventions, and long-term orbital traffic trends.
       </p>
+    </div>
+
+    <section class="card">
 
       <div class="filters-row mb-3">
         <label>
@@ -49,7 +56,18 @@
 
       <div class="chart-title">Projected Satellite & Debris Growth</div>
       <div class="chart-subtitle">
-        Solid lines indicate known historical data. Faded lines show future projections (2024–2035).
+        Solid lines show historical data.  
+        Future projections (2024–2035) depend on the selected scenario.
+      </div>
+      
+      <!-- Legend -->
+      <div class="flex items-center gap-6 text-sm mt-1 legend-row">
+        <div class="flex items-center gap-2">
+          <span class="legend-dot active-dot"></span> Satellites (Cumulative)
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="legend-dot debris-dot"></span> Debris (Cumulative)
+        </div>
       </div>
 
       <div class="chart-card" id="predictive-chart"></div>
@@ -66,11 +84,13 @@
         Click any year to explore predicted congestion
       </h2>
       <p id="pred-summary" class="text-sm text-gray-300">
-        This panel highlights projected satellite counts, debris growth, and congestion severity under the selected scenario.
+        Projected satellite counts, debris growth, and congestion severity
+        under the chosen scenario.
       </p>
 
       <div id="pred-kpis" class="event-kpi-grid mt-3"></div>
     </section>
+
   </main>
 
   <script src="js/projections.js"></script>

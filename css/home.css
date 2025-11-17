@@ -6,35 +6,29 @@
   --border: #232323;
 }
 
-/* ========== GLOBAL RESET ========== */
-* {
-  box-sizing: border-box;
-}
+/* RESET */
+* { box-sizing: border-box; }
 html, body {
   height: 100%;
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
-/* ========== BACKGROUND LAYERS ========== */
-
-/* 3D Scene Canvas (Earth + debris) */
+/* BACKGROUND */
 #space-canvas {
   position: fixed;
   inset: 0;
-  z-index: 0; /* visible layer, behind everything but background overlay */
+  z-index: 0;
   width: 100vw;
   height: 100vh;
-  display: block;
-  pointer-events: none; /* don’t block clicks */
+  pointer-events: none;
 }
 
-/* Soft transparent vignette over the 3D scene */
 #space-bg {
   position: fixed;
   inset: 0;
@@ -46,93 +40,98 @@ html, body {
     radial-gradient(ellipse at top, rgba(0,0,0,0.35), transparent 60%);
 }
 
-/* ========== HEADER ========== */
+/* =====================================================
+   HEADER — PERFECTLY MATCHES GLOBAL styles.css
+   ===================================================== */
+
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 10; /* stays above everything else */
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 18px;
-  background: rgba(0, 0, 0, 0.45);
+  z-index: 10;
+  background: rgba(0,0,0,0.45);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--border);
 }
 
+.site-header .nav-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Brand */
 .brand {
   font-weight: 700;
-  letter-spacing: 0.2px;
+  font-size: 1.25rem;
 }
 
-.nav {
-  margin-left: auto;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.nav a {
+/* Global nav identical to styles.css */
+header nav a {
+  font-size: 0.95rem;
+  padding: 0.25rem 0.4rem;
   color: var(--ink);
-  text-decoration: none;
-  font-size: 14px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: 1px solid transparent;
+  text-decoration: none !important;
   transition: 0.15s ease;
 }
-.nav a:hover {
-  border-color: #2a2a2a;
-  background: rgba(255, 255, 255, 0.03);
+
+header nav a:hover {
+  color: #fff;
 }
 
-/* ========== HERO OVERLAY (CENTERED TEXT) ========== */
+/* Active link — EXACT SAME AS styles.css */
+header nav a.active {
+  font-weight: 700;
+  color: #fff !important;
+  border-bottom: 2px solid var(--accent);
+}
+
+/* =====================================================
+   HERO CONTENT
+   ===================================================== */
+
 .hero-overlay {
   position: fixed;
-  inset: 0;
-  z-index: 5; /* above the background, below header */
-  display: grid;
-  place-items: center;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  padding: 0 20px;
-  pointer-events: none; /* allow interaction with background */
+  pointer-events: none;
+  width: 100%;
+  z-index: 5;
 }
 
 .hero-overlay h1 {
   font-size: clamp(28px, 6vw, 64px);
-  line-height: 1.05;
-  margin: 0 0 10px 0;
   font-weight: 800;
-  text-shadow: 0 0 16px rgba(0, 0, 0, 0.45);
+  margin: 0 0 10px;
+  text-shadow: 0 0 16px rgba(0,0,0,0.45);
 }
 
 .hero-overlay .accent {
   color: var(--accent);
-  text-shadow: 
-    0 0 24px rgba(122, 167, 255, 0.35),
-    0 0 48px rgba(122, 167, 255, 0.2);
+  text-shadow: 0 0 24px rgba(122,167,255,0.35);
 }
 
 .hero-overlay .tagline {
   max-width: 720px;
-  color: var(--muted);
-  font-size: clamp(14px, 1.8vw, 18px);
   margin: 8px auto 18px;
-  text-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+  font-size: clamp(14px, 1.8vw, 18px);
+  color: var(--muted);
 }
 
-/* Button in hero (interactive) */
+/* Button */
 .hero-overlay .btn.enter {
-  pointer-events: auto; /* clickable */
-  display: inline-block;
-  margin-top: 6px;
-  border: 1px solid #2b2b2b;
-  background: #0d0d0d;
-  color: var(--ink);
+  pointer-events: auto;
   padding: 10px 16px;
   border-radius: 12px;
+  background: #0d0d0d;
+  border: 1px solid #2b2b2b;
+  color: var(--ink);
   font-weight: 600;
-  transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s;
 }
 
 .hero-overlay .btn.enter:hover {
@@ -143,16 +142,4 @@ html, body {
 
 .hero-overlay .btn.enter:active {
   transform: translateY(0);
-}
-
-/* ========== RESPONSIVE HELPERS ========== */
-@media (max-width: 600px) {
-  .site-header {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .nav {
-    margin-left: 0;
-    justify-content: center;
-  }
 }

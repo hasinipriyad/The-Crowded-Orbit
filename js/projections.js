@@ -1,4 +1,4 @@
-// predictive.js (CUMULATIVE VERSION)
+// predictive.js (CUMULATIVE VERSION — COLOR CODED KPI PANEL)
 document.addEventListener("DOMContentLoaded", async () => {
   const DATA_URL = "data/clean_leo_satellites.csv";
 
@@ -9,11 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const panelSummary = document.getElementById("pred-summary");
   const panelKPIs = document.getElementById("pred-kpis");
 
-  // Colors
-  const satColor = "#7aa7ff";
-  const debrisColor = "#fb923c";
+  // Line Colors
+  const satColor = "#7aa7ff";     // BLUE
+  const debrisColor = "#fb923c";  // ORANGE
 
-  // SVG Setup
+  // === SVG SETUP ============================================================
   const width = (chartDiv.node()?.clientWidth || 760) - 60;
   const height = 360;
   const margin = { top: 35, right: 70, bottom: 50, left: 60 };
@@ -58,8 +58,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     .attr("stroke", debrisColor)
     .attr("stroke-width", 2);
 
-  // Tooltip
-  const tooltip = d3.select("body").append("div")
+  // === TOOLTIP =============================================================
+  const tooltip = d3.select("body")
+    .append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
@@ -85,20 +86,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     .attr("width", innerWidth)
     .attr("height", innerHeight);
 
-  // Load dataset
+  // === LOAD & PROCESS DATA ================================================
   const raw = await d3.csv(DATA_URL);
 
-  // Aggregate historical counts
   const yearly = d3.rollups(
     raw,
     v => ({
       satellites: v.length,
       debris: v.filter(
-        d =>
-          (d.object_type || "").includes("DEB") ||
-          (d.status || "").includes("DEBRIS")
-      ).length
-    }),
+        d => (d.object_type || "").includes("DEB") ||
+             (d.status || "").includes("DEBRIS")
+    ).length }),
     d => +d.launch_year
   )
     .map(([year, vals]) => ({ year, ...vals }))
@@ -116,23 +114,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const baseLast = yearly[yearly.length - 1];
 
-  // Scenario projection logic
+  // === SCENARIOS ===========================================================
   function projectScenario(type) {
     const known = yearly.map(d => ({ ...d }));
     let cumSat = baseLast.cumulativeSat;
     let cumDeb = baseLast.cumulativeDebris;
 
     let satGrowth, debGrowth;
-    if (type === "baseline") {
-      satGrowth = 1.10;
-      debGrowth = 1.08;
-    } else if (type === "accelerated") {
-      satGrowth = 1.18;
-      debGrowth = 1.15;
-    } else {
-      satGrowth = 1.05;
-      debGrowth = 1.04;
-    }
+    if (type === "baseline")      { satGrowth = 1.10; debGrowth = 1.08; }
+    else if (type === "accelerated") { satGrowth = 1.18; debGrowth = 1.15; }
+    else                           { satGrowth = 1.05; debGrowth = 1.04; }
 
     const future = [];
     for (let year = 2024; year <= 2035; year++) {
@@ -144,15 +135,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     return [...known, ...future];
   }
 
+  // === CHART UPDATE ========================================================
   function updateChart() {
     const scenario = scenarioSelect.value;
     const data = projectScenario(scenario);
 
     x.domain(d3.extent(data, d => d.year));
-    y.domain([
-      0,
-      d3.max(data, d => Math.max(d.cumulativeSat, d.cumulativeDebris)) * 1.1
-    ]);
+    y.domain([0, d3.max(data, d => Math.max(d.cumulativeSat, d.cumulativeDebris)) * 1.1]);
 
     xAxisG.call(d3.axisBottom(x).ticks(8).tickFormat(d3.format("d")));
     yAxisG.call(d3.axisLeft(y).ticks(6));
@@ -164,6 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     resetPanel();
   }
 
+  // === HOVER INTERACTION ===================================================
   function setupHover(data) {
     hoverRect
       .on("mousemove", ev => {
@@ -176,15 +166,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         hoverLine.attr("x1", xPos).attr("x2", xPos).style("opacity", 1);
 
-        hoverCircleSat
-          .attr("cx", xPos)
-          .attr("cy", y(d.cumulativeSat))
-          .style("opacity", 1);
-
-        hoverCircleDebris
-          .attr("cx", xPos)
-          .attr("cy", y(d.cumulativeDebris))
-          .style("opacity", 1);
+        hoverCircleSat.attr("cx", xPos).attr("cy", y(d.cumulativeSat)).style("opacity", 1);
+        hoverCircleDebris.attr("cx", xPos).attr("cy", y(d.cumulativeDebris)).style("opacity", 1);
 
         tooltip
           .style("opacity", 1)
@@ -209,6 +192,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
   }
 
+  // === KPI PANEL ============================================================
   function resetPanel() {
     panelTitle.textContent = "Click any year to explore predicted congestion";
     panelSummary.textContent =
@@ -224,29 +208,34 @@ document.addEventListener("DOMContentLoaded", async () => {
     panelSummary.textContent =
       "Cumulative object counts and predicted congestion level.";
 
+    const congestionIndex = Math.round((d.cumulativeDebris / d.cumulativeSat) * 100);
+
+    // 🎨 COLOR-CODED KPI PANEL
     panelKPIs.innerHTML = `
-      <div class="event-kpi-card launches">
-        <div class="event-kpi-label">Total Satellites</div>
-        <div class="event-kpi-value">${d.cumulativeSat.toLocaleString()}</div>
+      <!-- Satellites (BLUE) -->
+      <div class="event-kpi-card kpi-blue-border">
+        <div class="event-kpi-label kpi-blue">TOTAL SATELLITES</div>
+        <div class="event-kpi-value kpi-blue">${d.cumulativeSat.toLocaleString()}</div>
         <div class="event-kpi-note">All LEO satellites accumulated</div>
       </div>
 
-      <div class="event-kpi-card debris-year">
-        <div class="event-kpi-label">Total Debris</div>
-        <div class="event-kpi-value">${d.cumulativeDebris.toLocaleString()}</div>
+      <!-- Debris (ORANGE) -->
+      <div class="event-kpi-card kpi-orange-border">
+        <div class="event-kpi-label kpi-orange">TOTAL DEBRIS</div>
+        <div class="event-kpi-value kpi-orange">${d.cumulativeDebris.toLocaleString()}</div>
         <div class="event-kpi-note">Tracked LEO debris objects</div>
       </div>
 
-      <div class="event-kpi-card debris-total">
-        <div class="event-kpi-label">Congestion Index</div>
-        <div class="event-kpi-value">${
-          Math.round((d.cumulativeDebris / d.cumulativeSat) * 100)
-        }</div>
+      <!-- Congestion (RED) -->
+      <div class="event-kpi-card kpi-red-border">
+        <div class="event-kpi-label kpi-red">CONGESTION INDEX</div>
+        <div class="event-kpi-value kpi-red">${congestionIndex}</div>
         <div class="event-kpi-note">Higher = more severe</div>
       </div>
     `;
   }
 
+  // === LISTENERS ===========================================================
   scenarioSelect.addEventListener("change", updateChart);
 
   updateChart();

@@ -31,13 +31,13 @@
   const rows = raw.map(d => ({
     year: +d.launch_year,
     country: d.owner_clean || "Unknown",
-    type: d.object_type || "UNK", // DEB, PAY, R/B, UNK
-    status: (d.status || "Other").toLowerCase(), // active/inactive/debris/rocket body/other
+    type: d.object_type || "UNK", 
+    status: (d.status || "Other").toLowerCase(),
     name: (d.name || "").toString(),
     operator: inferOperator(d.name)
   })).filter(d => !Number.isNaN(d.year));
 
-  // ---------- Filter state (dropdowns like timeline) ----------
+  // ---------- Filter state ----------
   const countryRoot = document.getElementById("countryFilter");
   const agencyRoot  = document.getElementById("agencyFilter");
   const countrySummaryEl = document.getElementById("countrySummary");
@@ -47,8 +47,8 @@
   const allCountries = uniq(rows.map(d => d.country));
   const allOperators = uniq(rows.map(d => d.operator));
 
-  const selCountries = new Set(); // empty => All
-  const selOperators = new Set(); // empty => All
+  const selCountries = new Set();
+  const selOperators = new Set();
 
   function setupSearchableDropdown(rootEl, allValues, selectedSet, summaryEl, labelKey) {
     const btn = rootEl.querySelector("[data-toggle='panel']");
@@ -107,7 +107,6 @@
     selectAll.addEventListener("click", () => { allValues.forEach(v => selectedSet.add(v)); updateSummary(); renderOptions(search.value); renderAll(); });
     document.addEventListener("click", e => { if (!rootEl.contains(e.target)) panel.classList.add("hidden"); });
 
-    // init
     updateSummary(); renderOptions("");
     return { updateSummary, renderOptions };
   }
@@ -128,18 +127,18 @@
     return out;
   }
 
-  // ---------- Section A: TOTAL Donut (no overlap) ----------
+  // ---------- Section A: TOTAL Donut ----------
   const donutSel = d3.select("#donutChart");
   const legendEl = document.getElementById("donutLegend");
   const kpiActive = document.getElementById("kpiActive");
   const kpiInactive = document.getElementById("kpiInactive");
   const kpiDebris = document.getElementById("kpiDebris");
   const kpiRB = document.getElementById("kpiRB");
+
   const ratioDebrisActive = document.getElementById("ratioDebrisActive");
   const ratioInactiveActive = document.getElementById("ratioInactiveActive");
 
   function computeTotalSlices(data) {
-    // Across ALL years in current filters
     const active   = data.filter(d => d.type === "PAY" && d.status === "active").length;
     const inactive = data.filter(d => d.type === "PAY" && d.status === "inactive").length;
     const debris   = data.filter(d => d.type === "DEB" || d.status === "debris").length;
@@ -155,15 +154,14 @@
     const data = applyFilters(rows);
     const { active, inactive, debris, rb, total } = computeTotalSlices(data);
 
-    // KPIs + ratios
     kpiActive.textContent = fmt(active);
     kpiInactive.textContent = fmt(inactive);
     kpiDebris.textContent = fmt(debris);
     kpiRB.textContent = fmt(rb);
+
     ratioDebrisActive.textContent = active ? d3.format(".1f")(debris / active * 100) + "%" : "—";
     ratioInactiveActive.textContent = active ? d3.format(".1f")(inactive / active * 100) + "%" : "—";
 
-    // Donut (no arc labels → no overlap)
     const width = 340, height = 340, r = Math.min(width, height) / 2;
     const innerR = r * 0.62;
 
@@ -192,13 +190,13 @@
       .attr("fill", d => d.data.color)
       .attr("stroke", "rgba(255,255,255,.15)").attr("stroke-width", 1);
 
-    // Center big total
     g.append("text")
       .attr("text-anchor", "middle")
       .attr("y", -4)
       .attr("font-size", 22)
       .attr("font-weight", 700)
       .text(fmt(total));
+
     g.append("text")
       .attr("text-anchor", "middle")
       .attr("y", 16)
@@ -206,7 +204,6 @@
       .attr("font-size", 11)
       .text("Total in current filters");
 
-    // Legend list (counts + %)
     entries.forEach(e => {
       const li = document.createElement("li");
       const share = total ? e.value / total : 0;
@@ -219,7 +216,7 @@
     });
   }
 
-  // ---------- Section B: Cohorts (Counts only) ----------
+  // ---------- Section B: Cohorts ----------
   const cohortSel = d3.select("#cohortChart");
   const cohortPanel = document.getElementById("cohortPanel");
   const cohortTitle = document.getElementById("cohortTitle");
@@ -227,7 +224,7 @@
   let lockedYear = null;
 
   function buildCohortData() {
-    const data = applyFilters(rows).filter(d => d.type === "PAY"); // satellites only
+    const data = applyFilters(rows).filter(d => d.type === "PAY");
     const years = uniq(data.map(d => d.year)).map(Number).sort((a,b)=>a-b);
     return years.map(y => {
       const yr = data.filter(d => d.year === y);
@@ -267,6 +264,7 @@
     g.append("g").attr("class","text-gray-300").call(yAxis)
       .call(s => s.selectAll("text").style("font-size","10px"));
 
+    // Tooltip (SVG)
     const tip = g.append("g").style("display","none").style("pointer-events","none");
     const tipBg = tip.append("rect").attr("fill","rgba(0,0,0,.85)").attr("stroke","rgba(255,255,255,.25)").attr("rx",6);
     const tipTx = tip.append("text").attr("fill","#fff").attr("font-size",12).attr("x",8).attr("y",16);
@@ -287,7 +285,6 @@
 
     function lockYear(d) {
       lockedYear = (lockedYear === d.year) ? null : d.year;
-      // Fill mini panel
       if (lockedYear === null) {
         cohortPanel.classList.add("hidden");
         cohortTopOps.innerHTML = "";
@@ -303,7 +300,7 @@
         });
         cohortPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
-      renderCohorts(); // redraw to show outline
+      renderCohorts();
     }
 
     // Draw stacked bars (Inactive bottom, Active top)
@@ -332,6 +329,9 @@
       .attr("opacity", 0.95)
       .style("cursor","pointer")
       .on("mousemove", (ev,d) => showTip(ev,d)).on("mouseleave", hideTip).on("click", (ev,d) => lockYear(d));
+
+    // ⭐ FIX: Bring tooltip to front so it’s never behind bars
+    g.node().appendChild(tip.node());
 
     // Highlight locked year
     if (lockedYear !== null) {

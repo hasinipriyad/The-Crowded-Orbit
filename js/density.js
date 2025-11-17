@@ -4,10 +4,8 @@
 
 document.addEventListener("DOMContentLoaded", function () {
   const DATA_URL = "data/clean_leo_satellites.csv";
-  const LEO_MAX = 2000; // show only 0–2000 km on the x-axis
+  const LEO_MAX = 2000;
 
-  // Match Status Mix colors:
-  // Active: blue, Inactive: light blue, Debris: orange
   const statusColors = d3
     .scaleOrdinal()
     .domain(["Active", "Inactive", "Debris"])
@@ -24,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let bins = [];
   let selectedBinIndex = null;
 
-  // DOM elements (3 filters + chart container + info box)
   const countrySelect = document.getElementById("country-filter");
   const statusSelect = document.getElementById("status-filter");
   const purposeSelect = document.getElementById("purpose-filter");
@@ -34,42 +31,47 @@ document.addEventListener("DOMContentLoaded", function () {
   const bandSummary = document.getElementById("band-summary");
   const bandMetrics = document.getElementById("band-metrics");
 
-  // SVG + layout
-  const width = 700;
-  const histHeight = 320;
-  const histMargin = { top: 20, right: 20, bottom: 40, left: 55 };
+  // ============================
+  // ⭐ Responsive width function
+  // ============================
+  function getChartWidth() {
+    return histContainer.node().clientWidth;
+  }
 
-  const histSvg = histContainer
+  let width = getChartWidth();
+  const histHeight = 360;
+  const histMargin = { top: 20, right: 45, bottom: 60, left: 75 };
+
+  let histSvg = histContainer
     .append("svg")
     .attr("width", width)
-    .attr("height", histHeight);
+    .attr("height", histHeight)
+    .attr("preserveAspectRatio", "xMinYMin meet");
 
-  const histInnerWidth = width - histMargin.left - histMargin.right;
-  const histInnerHeight = histHeight - histMargin.top - histMargin.bottom;
+  let histInnerWidth = width - histMargin.left - histMargin.right;
+  let histInnerHeight = histHeight - histMargin.top - histMargin.bottom;
 
-  const histG = histSvg
+  let histG = histSvg
     .append("g")
     .attr("transform", `translate(${histMargin.left},${histMargin.top})`);
 
-  const xHist = d3.scaleLinear().range([0, histInnerWidth]);
-  const yHist = d3.scaleLinear().range([histInnerHeight, 0]);
+  let xHist = d3.scaleLinear().range([0, histInnerWidth]);
+  let yHist = d3.scaleLinear().range([histInnerHeight, 0]);
 
-  const xHistAxis = histG
+  let xHistAxis = histG
     .append("g")
     .attr("class", "axis axis--x")
     .attr("transform", `translate(0,${histInnerHeight})`);
 
-  const yHistAxis = histG
-    .append("g")
-    .attr("class", "axis axis--y");
+  let yHistAxis = histG.append("g").attr("class", "axis axis--y");
 
   // Axis labels
   histSvg
     .append("text")
     .attr("x", histMargin.left + histInnerWidth / 2)
-    .attr("y", histHeight - 6)
+    .attr("y", histHeight - 12)
     .attr("text-anchor", "middle")
-    .attr("font-size", 11)
+    .attr("font-size", 12)
     .attr("fill", "#9aa0a6")
     .text("Altitude (km)");
 
@@ -79,9 +81,32 @@ document.addEventListener("DOMContentLoaded", function () {
     .attr("x", -histHeight / 2)
     .attr("y", 16)
     .attr("text-anchor", "middle")
-    .attr("font-size", 11)
+    .attr("font-size", 12)
     .attr("fill", "#9aa0a6")
     .text("Number of objects");
+
+
+  // =====================================================
+  // ⭐ MAIN UPDATE — REBUILD SVG ON WINDOW RESIZE
+  // =====================================================
+  window.addEventListener("resize", () => {
+    refreshChartDimensions();
+    updateHistogram();
+  });
+
+  function refreshChartDimensions() {
+    width = getChartWidth();
+
+    histSvg.attr("width", width);
+
+    histInnerWidth = width - histMargin.left - histMargin.right;
+    xHist.range([0, histInnerWidth]);
+
+    xHistAxis.attr("transform", `translate(0,${histInnerHeight})`);
+
+    histSvg.select("text")
+      .attr("x", histMargin.left + histInnerWidth / 2);
+  }
 
   // Load CSV
   d3.csv(DATA_URL).then(
@@ -89,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
       rawData = rows.map(d => {
         const perigee = +d.perigee_km || 0;
         const apogee = +d.apogee_km || perigee;
-        const altitude = (perigee + apogee) / 2; // simple mean shell altitude
+        const altitude = (perigee + apogee) / 2;
 
         return {
           altitude,
@@ -102,14 +127,10 @@ document.addEventListener("DOMContentLoaded", function () {
         };
       });
 
-      // Restrict to LEO
       rawData = rawData.filter(d => d.altitude >= 0 && d.altitude <= LEO_MAX);
 
       setupFilters();
       applyFiltersAndUpdate();
-    },
-    err => {
-      console.error("Error loading CSV:", err);
     }
   );
 
@@ -117,16 +138,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!s) return "Inactive";
     const t = String(s).toLowerCase();
     if (t.includes("active")) return "Active";
-    if (t.includes("debris")) return "Debris";
-    if (t.includes("rocket")) return "Debris"; // treat rocket bodies as debris
-    if (t.includes("dead") || t.includes("inactive") || t.includes("decay")) {
+    if (t.includes("debris") || t.includes("rocket")) return "Debris";
+    if (t.includes("dead") || t.includes("inactive") || t.includes("decay"))
       return "Inactive";
-    }
     return "Inactive";
   }
 
   function setupFilters() {
-    // Country/Agency
     const countrySet = new Set(rawData.map(d => d.country));
     countrySelect.innerHTML = '<option value="All">All Countries</option>';
     Array.from(countrySet)
@@ -138,7 +156,6 @@ document.addEventListener("DOMContentLoaded", function () {
         countrySelect.appendChild(opt);
       });
 
-    // Status
     statusSelect.innerHTML = `
       <option value="All">All Statuses</option>
       <option value="Active">Active</option>
@@ -146,7 +163,6 @@ document.addEventListener("DOMContentLoaded", function () {
       <option value="Debris">Debris</option>
     `;
 
-    // Purpose (object_type)
     const purposeSet = new Set(rawData.map(d => d.purpose));
     purposeSelect.innerHTML = '<option value="All">All Types</option>';
     Array.from(purposeSet)
@@ -158,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
         purposeSelect.appendChild(opt);
       });
 
-    // Listeners
     countrySelect.addEventListener("change", applyFiltersAndUpdate);
     statusSelect.addEventListener("change", applyFiltersAndUpdate);
     purposeSelect.addEventListener("change", applyFiltersAndUpdate);
@@ -193,18 +208,16 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Fixed domain for LEO view
     xHist.domain([0, LEO_MAX]);
 
     const binGen = d3
       .bin()
       .domain(xHist.domain())
       .value(d => d.altitude)
-      .thresholds(25); // 25 bins between 0–2000 km
+      .thresholds(25);
 
     bins = binGen(filteredData);
 
-    // Build stacked counts per status for each bin
     const stackedBins = bins.map(bin => {
       const counts = { Active: 0, Inactive: 0, Debris: 0, total: bin.length };
       bin.forEach(d => {
@@ -239,10 +252,9 @@ document.addEventListener("DOMContentLoaded", function () {
       .on("click", (_, d, i) => {
         selectedBinIndex = i;
         highlightSelectedBin();
-        updateInfoBox(d); // update info box when a band is clicked
+        updateInfoBox(d);
       });
 
-    // stacked rectangles inside each bar
     groups.each(function (d) {
       let yOffset = histInnerHeight;
       const self = d3.select(this);
@@ -256,6 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const count = d[seg.key];
         if (!count) return;
         const h = histInnerHeight - yHist(count);
+
         yOffset -= h;
 
         self
@@ -306,22 +319,20 @@ document.addEventListener("DOMContentLoaded", function () {
       .classed("selected", true);
   }
 
-  // =============== INFO BOX ===============
+  // INFO BOX
   function resetInfoBox() {
-    if (!bandSummary || !bandMetrics) return;
     bandSummary.textContent =
       "Click an altitude band in the histogram to see its congestion profile.";
     bandMetrics.innerHTML = "";
   }
 
   function updateInfoBox(d) {
-    if (!bandSummary || !bandMetrics) return;
+    const totalInBand = d.total;
+    const active = d.Active;
+    const inactive = d.Inactive;
+    const debris = d.Debris;
 
-    const totalInBand = d.total || 0;
-    const active = d.Active || 0;
-    const inactive = d.Inactive || 0;
-    const debris = d.Debris || 0;
-    const totalLEO = filteredData.length || 1;
+    const totalLEO = filteredData.length;
     const share = (totalInBand / totalLEO) * 100;
     const ratio = active > 0 ? (debris / active) : null;
 

@@ -4,41 +4,54 @@
   <meta charset="utf-8" />
   <title>The Crowded Orbit — Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Global styles (used by other pages too) -->
+
+  <!-- Global styles -->
   <link rel="stylesheet" href="css/styles.css" />
+
   <!-- Landing-only styles -->
   <link rel="stylesheet" href="css/home.css" />
 </head>
+
 <body>
-  <!-- The WebGL canvas (must exist BEFORE the script runs) -->
+  <!-- WebGL canvas -->
   <canvas id="space-canvas"></canvas>
-  <!-- Soft transparent vignette on top of canvas -->
   <div id="space-bg" aria-hidden="true"></div>
 
-  <!-- Simple header -->
+  <!-- Header -->
   <header class="site-header">
-    <div class="brand">The Crowded Orbit</div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="timeline.html">Timeline</a>
-      <a href="status.html">Status Mix</a>
-      <a href="density.html">Orbit Density</a>
-      <a href="debris.html">Trends</a>
-      <a href="projections.html">Predictive</a>
-    </nav>
+    <div class="nav-container mx-auto flex items-center justify-between p-4">
+      <div class="brand text-xl font-semibold tracking-wide">The Crowded Orbit</div>
+
+      <nav class="flex gap-4 text-sm text-gray-300">
+        <a class="active hover:text-white" href="index.html">Home</a>
+        <a class="hover:text-white" href="timeline.html">Timeline</a>
+        <a class="hover:text-white" href="status.html">Status Mix</a>
+        <a class="hover:text-white" href="density.html">Orbit Density</a>
+        <a class="hover:text-white" href="debris.html">Trends</a>
+        <a class="hover:text-white" href="projections.html">Predictive</a>
+      </nav>
+    </div>
   </header>
 
-  <!-- Text overlay centered over the 3D scene -->
+  <!-- Hero Overlay -->
   <main class="hero-overlay">
-    <h1>Low Earth Orbit is getting <span class="accent">crowded.</span></h1>
-    <p class="tagline">Explore launches, congestion, and debris trends — visualized.</p>
+    <h1>
+      Low Earth Orbit is getting
+      <span class="accent">crowded.</span>
+    </h1>
+
+    <p class="tagline">
+      Explore launches, congestion, and debris trends — visualized.
+    </p>
+
     <a class="btn enter" href="timeline.html">Enter Dashboard</a>
   </main>
 
-  <!-- Site helpers (optional) -->
+  <!-- JS -->
   <script src="js/main.js"></script>
-  <!-- Three.js background (module import) -->
   <script type="module" src="js/space-bg-three.js"></script>
 </body>
 </html>

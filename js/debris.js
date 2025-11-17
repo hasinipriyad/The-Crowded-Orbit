@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const DATA_URL = "data/clean_leo_satellites.csv";
 
-  const debrisColor = "#f97373"; 
+  const debrisColor = "#f97373";
   const launchColor = "#7aa7ff";
   const eventDotColor = "#fde047";
 
@@ -13,13 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const chartContainer = d3.select("#debris-chart");
 
-  // 🟦 Responsive width
-  const containerWidth =
-    chartContainer.node()?.clientWidth || 760;
-
-  // breathing room so no cropping
+  // Responsive width
+  const containerWidth = chartContainer.node()?.clientWidth || 760;
   const width = Math.max(600, containerWidth - 60);
-  const height = 360;
+  const height = 380;
   const margin = { top: 40, right: 70, bottom: 50, left: 65 };
 
   const svg = chartContainer
@@ -74,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .attr("stroke", launchColor)
     .attr("stroke-width", 2);
 
-  // Tooltip + Hover
+  // Tooltip
   const tooltip = d3
     .select("body")
     .append("div")
@@ -129,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Russian ASAT test against Cosmos 1408 generated thousands of fragments."
     }
   ];
+
   const eventsByYear = new Map(keyEvents.map((e) => [e.year, e]));
 
   let yearlyData = [];
@@ -178,6 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
     years = Array.from(byYear.keys()).sort((a, b) => a - b);
 
     let runningDebris = 0;
+
     yearlyData = years.map((y) => {
       const v = byYear.get(y);
       runningDebris += v.debrisCount;
@@ -197,12 +196,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupCountryFilter(rows) {
     const ownerSet = new Set(rows.map((d) => d.owner));
     countrySelect.innerHTML = '<option value="All">All Countries</option>';
+
     [...ownerSet].sort().forEach((o) => {
       const opt = document.createElement("option");
       opt.value = o;
       opt.textContent = o;
       countrySelect.appendChild(opt);
     });
+
     countrySelect.addEventListener("change", updateChart);
   }
 
@@ -212,7 +213,13 @@ document.addEventListener("DOMContentLoaded", function () {
     currentSeries = yearlyData.map((d) => {
       let lc = d.launchCountAll;
       if (selected !== "All") lc = d.launchesByOwner.get(selected) || 0;
-      return { year: d.year, debrisCount: d.debrisCount, cumDebris: d.cumDebris, launchCount: lc };
+
+      return {
+        year: d.year,
+        debrisCount: d.debrisCount,
+        cumDebris: d.cumDebris,
+        launchCount: lc
+      };
     });
 
     const minYear = d3.min(currentSeries, (d) => d.year);
@@ -234,14 +241,13 @@ document.addEventListener("DOMContentLoaded", function () {
     resetEventPanel();
   }
 
-  // Event dots + labels
+  // Draw event dots (NO LABELS ON CHART)
   function drawEventDots() {
     g.selectAll(".event-dot").remove();
-    g.selectAll(".event-label").remove();
 
     const pts = currentSeries.filter((d) => eventsByYear.has(d.year));
 
-    const dots = g
+    g
       .selectAll(".event-dot")
       .data(pts)
       .enter()
@@ -269,19 +275,9 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .on("mouseleave", () => tooltip.style("opacity", 0))
       .on("click", (_, d) => updateEventPanel(d.year));
-
-    // Label
-    g
-      .selectAll(".event-label")
-      .data(pts)
-      .enter()
-      .append("text")
-      .attr("class", "event-label")
-      .attr("x", (d) => x(d.year) + 6)
-      .attr("y", (d) => yDebris(d.cumDebris) - 6)
-      .text((d) => eventsByYear.get(d.year).label);
   }
 
+  // Hover vertical line + circles
   function setupHover() {
     hoverRect
       .on("mousemove", (event) => {
@@ -333,7 +329,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  // Panel
+  //
+  // Event Panel — KPIs (Color-coded)
+  //
   function resetEventPanel() {
     eventTitle.textContent = "Click a year or event dot to see significant events";
     eventSummary.textContent =
@@ -354,27 +352,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     eventMetrics.innerHTML = `
       <div class="event-kpi-grid">
-        <div class="event-kpi-card debris-total">
-          <div class="event-kpi-label">Cumulative debris</div>
-          <div class="event-kpi-value">${d.cumDebris.toLocaleString()}</div>
+
+        <!-- Cumulative debris -->
+        <div class="event-kpi-card kpi-red-border">
+          <div class="event-kpi-label kpi-red">CUMULATIVE DEBRIS</div>
+          <div class="event-kpi-value kpi-red">${d.cumDebris.toLocaleString()}</div>
           <div class="event-kpi-note">Objects tracked up to ${year}</div>
         </div>
 
-        <div class="event-kpi-card debris-year">
-          <div class="event-kpi-label">Debris added</div>
-          <div class="event-kpi-value">${d.debrisCount.toLocaleString()}</div>
+        <!-- Debris added -->
+        <div class="event-kpi-card kpi-orange-border">
+          <div class="event-kpi-label kpi-orange">DEBRIS ADDED</div>
+          <div class="event-kpi-value kpi-orange">${d.debrisCount.toLocaleString()}</div>
           <div class="event-kpi-note">New fragments in ${year}</div>
         </div>
 
-        <div class="event-kpi-card launches">
-          <div class="event-kpi-label">Launches${
-            countrySelect.value !== "All"
-              ? " (" + countrySelect.value + ")"
-              : ""
-          }</div>
-          <div class="event-kpi-value">${d.launchCount.toLocaleString()}</div>
+        <!-- Launches -->
+        <div class="event-kpi-card kpi-blue-border">
+          <div class="event-kpi-label kpi-blue">
+            LAUNCHES${
+              countrySelect.value !== "All" ? " (" + countrySelect.value + ")" : ""
+            }
+          </div>
+          <div class="event-kpi-value kpi-blue">${d.launchCount.toLocaleString()}</div>
           <div class="event-kpi-note">Payload launches</div>
         </div>
+
       </div>
 
       ${

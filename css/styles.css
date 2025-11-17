@@ -2,334 +2,337 @@
    GLOBAL THEME & RESET
    =================================================================== */
 
-:root {
-  --bg: #000;
-  --ink: #f5f7fa;
-  --muted: #9aa0a6;
-  --accent: #7aa7ff;
-  --accent-2: #b3f0ff;
-  --border: #232323;
-}
+   :root {
+    --bg: #000;
+    --ink: #f5f7fa;
+    --muted: #9aa0a6;
+    --accent: #7aa7ff;
+    --accent-2: #b3f0ff;
+    --border: #232323;
+  }
+  
+  /* -----------------
+     GLOBAL FONT UPGRADE
+     ----------------- */
+  
+  html {
+    font-size: 17px;
+  }
+  
+  body {
+    letter-spacing: 0.2px;
+    line-height: 1.6;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+      "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+  }
+  
+  /* ===================================================================
+     BACKGROUND STARFIELD
+     =================================================================== */
+  
+  #space-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+  }
+  
+  #space-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(10, 20, 40, 0.16), transparent 65%),
+      radial-gradient(ellipse at bottom, rgba(8, 12, 24, 0.2), transparent 70%),
+      radial-gradient(ellipse at top, rgba(0, 0, 0, 0.3), transparent 60%);
+    pointer-events: none;
+  }
+  
+  /* ===================================================================
+     GLOBAL UI (Cards, Nav, Filters)
+     =================================================================== */
+  
+  .card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem;
+    padding: 1.4rem;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.02);
+  }
+  .card.no-bottom-padding {
+    padding-bottom: 0.2rem !important;
+  }  
+  
+  header,
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  header nav a {
+    font-size: 0.95rem;
+    padding: 0.25rem 0.4rem;
+  }
+  
+  main,
+  .page {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .filters-row label {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+  
+  .filters-row select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.55rem 0.7rem;
+    color: var(--ink);
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+  }
+  
+  /* ===================================================================
+     PAGE TITLES — CENTERED, BIG, BOLD
+     =================================================================== */
+  
+  .page-header {
+    text-align: center;
+    margin-bottom: 1.6rem;
+    margin-top: 0.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  
+  .page-header p {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 720px;
+    margin: 0.4rem auto 0;
+  }
+  
+  /* ===================================================================
+     CHART UNIVERSAL
+     =================================================================== */
+  
+  .chart-card {
+    padding: 0.8rem;
+    overflow: visible !important;
+  }
+  
+  .chart-card svg,
+  #debris-chart svg,
+  #density-histogram svg {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+  }
+  
+  .chart-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .chart-subtitle {
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+  
+  .axis text,
+  .debris-chart-axis text {
+    fill: var(--muted);
+    font-size: 12px;
+  }
+  
+  .axis line,
+  .axis path,
+  .debris-chart-axis path,
+  .debris-chart-axis line {
+    stroke: rgba(255, 255, 255, 0.4);
+  }
+  
+  /* ===================================================================
+     Tooltip (GLOBAL)
+     =================================================================== */
+  
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    padding: 6px 10px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--ink);
+    z-index: 999999 !important;
+    backdrop-filter: blur(4px);
+    white-space: nowrap;
+  }
 
-/* -----------------
-   GLOBAL FONT UPGRADE
-   ----------------- */
+  
+  /* ===================================================================
+     TIMELINE PAGE
+     =================================================================== */
+  
+  .drawer {
+    background: rgba(0, 0, 0, 0.9);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+  
+  button.chip {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+  }
+  
+  /* ===================================================================
+     Density, Debris, Predictive pages
+     =================================================================== */
+  
+  .density-page,
+  .trend-page,
+  .predictive-page {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding-bottom: 2.5rem;
+  }
+  
+  /* KPI Cards */
+  .event-kpi-grid,
+  .pred-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1rem;
+  }
+  
+  .event-kpi-card,
+  .pred-kpi-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.7rem;
+    padding: 1.1rem;
+  }
+  
+  .event-kpi-label,
+  .pred-kpi-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  
+  .event-kpi-value,
+  .pred-kpi-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .event-kpi-note,
+  .pred-kpi-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .no-gap {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
 
-html {
-  font-size: 17px; /* Bigger base font */
-}
+  .nav-container {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+  
+  nav a.active {
+    font-weight: 700;
+    color: #fff !important;
+    border-bottom: 2px solid var(--accent);
+  }
+  
+  header nav a:hover,
+  .site-header nav a:hover {
+    color: #fff;
+  }
+  .event-kpi-label.kpi-red,
+  .event-kpi-value.kpi-red { color: #f97373 !important; }
+  .event-kpi-label.kpi-orange,
+  .event-kpi-value.kpi-orange { color: #f9a23f !important; }
+  .event-kpi-label.kpi-blue,
+  .event-kpi-value.kpi-blue { color: #7aa7ff !important; }
+  .kpi-red       { color: #f97373 !important; }
+  .kpi-orange    { color: #f9a23f !important; }
+  .kpi-blue      { color: #7aa7ff !important; }
+  .kpi-red-border {
+    border-color: #f97373 !important;
+  }
+  .kpi-orange-border {
+    border-color: #f9a23f !important;
+  }
+  .kpi-blue-border {
+    border-color: #7aa7ff !important;
+  }
+  /* Legend styling */
+  .legend-row {
+    color: var(--muted);
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  /* Color mapping for dot legend */
+  .active-dot { background: #7aa7ff; }
+  .inactive-dot { background: #7aa7ff; }
+  .debris-dot { background: #f9a23f; }
+  .event-dot { background: #fde047; }   /* yellow event color */
+  .legend-row { color: var(--muted); }
+  .legend-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .active-dot  { background: #7aa7ff; }   /* launches */
+  .debris-dot  { background: #f9a23f; }   /* debris */
+  .event-dot   { background: #fde047; }   /* yellow dots */
 
-body {
-  letter-spacing: 0.2px;
-  line-height: 1.6;
-}
 
-* {
-  box-sizing: border-box;
-}
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
-    "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  -webkit-font-smoothing: antialiased;
-}
 
-.mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
-}
-
-/* ===================================================================
-   BACKGROUND STARFIELD
-   =================================================================== */
-
-#space-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-}
-
-#space-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-      ellipse at center,
-      rgba(10, 20, 40, 0.16),
-      transparent 65%
-    ),
-    radial-gradient(ellipse at bottom, rgba(8, 12, 24, 0.2), transparent 70%),
-    radial-gradient(ellipse at top, rgba(0, 0, 0, 0.3), transparent 60%);
-  pointer-events: none;
-}
-
-/* ===================================================================
-   GLOBAL UI ELEMENTS (Cards, Navigation, Filters)
-   =================================================================== */
-
-.card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  padding: 1.4rem; /* Increased spacing */
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.02);
-}
-
-header,
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-header nav a {
-  font-size: 0.95rem; /* Bigger nav text */
-  padding: 0.25rem 0.4rem;
-}
-
-main,
-.page {
-  position: relative;
-  z-index: 1;
-}
-
-.filters-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-}
-
-.filters-row label {
-  font-size: 0.95rem;
-  color: var(--muted);
-  display: flex;
-  flex-direction: column;
-}
-
-.filters-row select {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 0.55rem 0.7rem;
-  color: var(--ink);
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
-}
-
-/* ===================================================================
-   CHART STYLES
-   =================================================================== */
-
-.chart-card {
-  padding: 0.8rem;
-  overflow: visible !important;
-}
-
-.chart-card svg,
-#debris-chart svg,
-#density-histogram svg {
-  width: 100% !important;
-  height: auto !important;
-  display: block;
-}
-
-.chart-title {
-  font-size: 1.25rem; /* readability boosted */
-  font-weight: 600;
-}
-
-.chart-subtitle {
-  font-size: 0.95rem;
-  color: var(--muted);
-}
-
-/* D3 axes */
-.axis text,
-.debris-chart-axis text {
-  fill: var(--muted);
-  font-size: 12px; /* bigger */
-}
-
-.axis line,
-.axis path,
-.debris-chart-axis path,
-.debris-chart-axis line {
-  stroke: rgba(255, 255, 255, 0.4);
-}
-
-/* ===================================================================
-   HOMEPAGE
-   =================================================================== */
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-overlay h1 {
-  font-size: 3.4rem;
-  font-weight: 700;
-}
-
-.hero-overlay .tagline {
-  font-size: 1.2rem;
-  margin-top: 0.5rem;
-}
-
-.hero-overlay .btn.enter {
-  margin-top: 1.5rem;
-  padding: 0.9rem 1.3rem;
-  background: var(--accent);
-  color: black;
-  border-radius: 0.5rem;
-  font-weight: 600;
-}
-
-/* ===================================================================
-   TIMELINE PAGE
-   =================================================================== */
-
-.drawer {
-  background: rgba(0, 0, 0, 0.9);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-}
-
-button.chip {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  font-size: 0.8rem;
-  padding: 0.35rem 0.75rem;
-  border-radius: 9999px;
-}
-
-button.chip:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* ===================================================================
-   ORBIT DENSITY PAGE
-   =================================================================== */
-
-.density-page {
-  max-width: 1250px;
-  margin: 0 auto;
-  padding-bottom: 2.5rem;
-}
-
-#density-histogram .bar-rect {
-  transition: opacity 0.2s, stroke 0.2s;
-}
-
-/* ===================================================================
-   DEBRIS / TRENDS PAGE
-   =================================================================== */
-
-.trend-page {
-  max-width: 1250px;
-  margin: 0 auto;
-  padding-bottom: 2.5rem;
-}
-
-.event-label {
-  font-size: 12px;
-  fill: var(--muted);
-}
-
-/* KPI CARDS */
-.event-kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
-}
-
-.event-kpi-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 0.7rem;
-  padding: 1.1rem;
-}
-
-.event-kpi-label {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.event-kpi-value {
-  font-size: 1.5rem; /* bigger */
-}
-
-.event-kpi-note {
-  margin-top: 0.3rem;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-/* ===================================================================
-   TOOLTIP (ALL CHARTS)
-   =================================================================== */
-
-.tooltip {
-  position: absolute;
-  pointer-events: none;
-  padding: 6px 10px;
-  background: rgba(0, 0, 0, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
-  font-size: 0.85rem;
-  color: var(--ink);
-  z-index: 9999;
-  backdrop-filter: blur(4px);
-  white-space: nowrap;
-}
-
-/* ===================================================================
-   PREDICTIVE PAGE
-   =================================================================== */
-
-.predictive-page {
-  max-width: 1250px;
-  margin: 0 auto;
-  padding-bottom: 2.5rem;
-}
-
-.pred-kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
-}
-
-.pred-kpi-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 0.7rem;
-  padding: 1.1rem;
-}
-
-.pred-kpi-label {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-}
-
-.pred-kpi-value {
-  font-size: 1.5rem;
-}
-
-.pred-kpi-note {
-  font-size: 0.8rem;
-}
-
-/* =================================================================== */
