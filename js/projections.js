@@ -1,4 +1,4 @@
-// predictive.js (CUMULATIVE VERSION — COLOR CODED KPI PANEL)
+// predictive.js
 document.addEventListener("DOMContentLoaded", async () => {
   const DATA_URL = "data/clean_leo_satellites.csv";
 
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const satColor = "#7aa7ff";     // BLUE
   const debrisColor = "#fb923c";  // ORANGE
 
-  // === SVG SETUP ============================================================
+  //  SVG SETUP 
   const width = (chartDiv.node()?.clientWidth || 760) - 60;
   const height = 360;
   const margin = { top: 35, right: 70, bottom: 50, left: 60 };
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     .attr("stroke", debrisColor)
     .attr("stroke-width", 2);
 
-  // === TOOLTIP =============================================================
+  //  TOOLTIP 
   const tooltip = d3.select("body")
     .append("div")
     .attr("class", "tooltip")
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     .attr("width", innerWidth)
     .attr("height", innerHeight);
 
-  // === LOAD & PROCESS DATA ================================================
+  //  LOAD & PROCESS DATA 
   const raw = await d3.csv(DATA_URL);
 
   const yearly = d3.rollups(
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const baseLast = yearly[yearly.length - 1];
 
-  // === SCENARIOS ===========================================================
+  //  SCENARIOS 
   function projectScenario(type) {
     const known = yearly.map(d => ({ ...d }));
     let cumSat = baseLast.cumulativeSat;
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return [...known, ...future];
   }
 
-  // === CHART UPDATE ========================================================
+  //  CHART UPDATE 
   function updateChart() {
     const scenario = scenarioSelect.value;
     const data = projectScenario(scenario);
@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     resetPanel();
   }
 
-  // === HOVER INTERACTION ===================================================
+  //  HOVER INTERACTION 
   function setupHover(data) {
     hoverRect
       .on("mousemove", ev => {
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
   }
 
-  // === KPI PANEL ============================================================
+  //  KPI PANEL 
   function resetPanel() {
     panelTitle.textContent = "Click any year to explore predicted congestion";
     panelSummary.textContent =
@@ -210,7 +210,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const congestionIndex = Math.round((d.cumulativeDebris / d.cumulativeSat) * 100);
 
-    // 🎨 COLOR-CODED KPI PANEL
+    // COLOR-CODED KPI PANEL
     panelKPIs.innerHTML = `
       <!-- Satellites (BLUE) -->
       <div class="event-kpi-card kpi-blue-border">
@@ -235,7 +235,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
   }
 
-  // === LISTENERS ===========================================================
+  //  LISTENERS 
   scenarioSelect.addEventListener("change", updateChart);
 
   updateChart();
