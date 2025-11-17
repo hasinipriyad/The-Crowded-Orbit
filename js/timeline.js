@@ -16,7 +16,7 @@
       name: (d.name || "").toString(),
     }));
 
-  // ====== Elements
+  // Elements
   const chartWrap   = d3.select("#chart");
   const modeBtns    = Array.from(document.querySelectorAll(".mode-btn"));
   const clearBtn    = document.getElementById("clearFilters");
@@ -33,7 +33,7 @@
   const ctxImg     = document.getElementById("ctxImg");
   const ctxDriverList = document.getElementById("ctxDriverList");
 
-  // ====== State
+  // State
   let mode = "yearly";
   const uniq = arr => Array.from(new Set(arr)).sort((a,b)=> (a>b?1:a<b?-1:0));
   const allCountries = uniq(rows.map(d => d.country));
@@ -43,7 +43,7 @@
   const selectedCountries = new Set();        // empty => all
   const selectedTypes     = new Set(["PAY"]); // default to payloads
 
-  // ====== Searchable Dropdown Component
+  // Searchable Dropdown Component
   function setupSearchableDropdown(rootEl, allValues, selectedSet, summaryEl, placeholderLabel) {
     const btn = rootEl.querySelector("[data-toggle='panel']");
     const panel = rootEl.querySelector("[data-panel]");
@@ -146,7 +146,7 @@
     typeRoot, allTypes, selectedTypes, typeSummaryEl, "type"
   );
 
-  // ====== Mode toggle
+  //  Mode toggle
   function setMode(next) {
     mode = next;
     modeBtns.forEach(b => {
@@ -157,7 +157,7 @@
   }
   modeBtns.forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
 
-  // ====== Clear filters
+  //  Clear filters
   clearBtn.addEventListener("click", () => {
     selectedCountries.clear();
     selectedTypes.clear(); selectedTypes.add("PAY");
@@ -166,7 +166,7 @@
     render();
   });
 
-  // ====== Data helpers
+  //  Data helpers
   function inferDriver(name) {
     const n = name.toUpperCase();
     if (n.includes("STARLINK")) return "Starlink";
@@ -200,7 +200,7 @@
     return yearly.map(d => ({ year: d.year, value: (acc += d.value) }));
   }
 
-  // ====== Chart render
+  //  Chart render
   const margin = { top: 18, right: 24, bottom: 42, left: 64 };
   const height = 440;
 
@@ -314,7 +314,7 @@
     }).on("mouseleave", () => tip.style("display","none"));
   }
 
-  // ====== Context panel updater (replaces drawer)
+  //  Context panel updater (replaces drawer)
   async function updateContext(year, currentFilteredRows) {
     // Title
     ctxTitle.textContent = `${year} — context`;
